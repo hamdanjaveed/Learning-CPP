@@ -3,32 +3,49 @@
 #include <iostream>
 #include <string>
 
+// say that we're using the std namespace
+using namespace std;
+
 int main() {
 	// ask for the person's name
-	std::cout << "Please enter your name: ";
+	cout << "Please enter your name: ";
 
 	// read the name
 	// a variable to hold the user's name
-	std::string name;
+	string name;
 	// read the name
-	std::cin >> name;
+	cin >> name;
 
 	// build the message
-	const std::string greeting = "Hello, " + name + "!";
+	const string greeting = "Hello, " + name + "!";
 
-	// build the second and fourth lines
-	const std::string spaces(greeting.size(), ' ');
-	const std::string secondAndFourth = "* " + spaces + " *";
+	// the number of blank spaces around the greeting (both vert and horz)
+	const int pad = 1;
 
-	// build the first and fifth lines of the output
-	const std::string firstAndFifth(secondAndFourth.size(), '*');
-	
-	// write the greeting
-	std::cout << std::endl;
-	std::cout << firstAndFifth << std::endl;
-	std::cout << secondAndFourth << std::endl;
-	std::cout << "* " + greeting + " *" << std::endl;
-	std::cout << secondAndFourth << std::endl;
-	std::cout << firstAndFifth << std::endl;
+	// the number of rows and columns to write
+	const int rows = pad * 2 + 3;
+	const string::size_type columns = greeting.size() + pad * 2 + 2;
+
+	// write a line to separate output
+	cout << endl;
+
+	// write the output
+	for (int r = 0; r < rows; r++) {
+		string::size_type c = 0;
+		while (c < columns) {
+			if (r == pad + 1 && c == pad + 1) {
+				cout << greeting;
+				c += greeting.size();
+			} else {
+				if (r == 0 || r == rows - 1 || c == 0 || c == columns - 1) {
+					cout << "*";
+				} else {
+					cout << " ";
+				}
+				c++;
+			}
+		}
+		cout << endl;
+	}
 	return 0;
 }
