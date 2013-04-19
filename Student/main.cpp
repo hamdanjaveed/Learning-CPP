@@ -1,4 +1,4 @@
-// 4.1.5, using functions
+// 4.2.3, using structs
 #include <iostream>
 #include <string>
 #include <algorithm> // to use the sort function
@@ -6,6 +6,13 @@
 #include <stdexcept> // to use the domain_error
 
 using namespace std;
+
+struct Student {
+	string name;
+	double midterm;
+	double final;
+	vector<double> homework;
+};
 
 double grade(double midterm, double final, double homework) {
 	return 0.2 * midterm + 0.4 * final + 0.4 * homework;
@@ -37,35 +44,65 @@ istream& readHomework(istream& in, vector<double>& homework) {
 	if (in) {
 		homework.clear();
 		double temp;
-		while (in >> temp) {
-			homework.push_back(temp);
+		cout << "Enter the first homework: ";
+		in >> temp;
+		if (in) {
+			do {
+				homework.push_back(temp);
+				cout << "Enter another homework: ";
+			} while(in >> temp);
 		}
 		in.clear();
 	}
 	return in;
 }
 
+bool readStudent(istream& in, Student& s) {
+	cout << "Cin is: " << (in.fail() ? "true" : "false") << endl;
+	in.ignore(numeric_limits<streamsize>::max(),'\n'); 
+	in.clear();
+	cout << "Cin before name: " << (in.fail() ? "true" : "false") << ", " << in << endl;
+	in >> s.name;
+	cout << "Cin after name: " << (in.fail() ? "true" : "false") << ", " << in << endl;
+	in >> s.midterm;
+	in >> s.final;
+	readHomework(in, s.homework);
+	cout << "Failed: " << (in.fail() ? "true" : "false") << endl;
+	return !in.fail();
+}
+
+double grade(const Student& s) {
+	return grade(s.midterm, s.final, s.homework);
+}
+
+bool compareStudent(const Student& student1, const Student& student2) {
+	return student1.name < student2.name;
+}
+
 int main () {
-	cout << "Please enter your first name: ";
-	string name;
-	cin >> name;
-	cout << "Hello, " << name << "!" << endl;
+	vector<Student> students;
+	Student temp;
+	string::size_type longestName = 0;
 
-	cout << "Please enter your midterm and final marks: ";
-	double midterm, final;
-	cin >> midterm >> final;
+	while (readStudent(cin, temp)) {
+		longestName = max(longestName, temp.name.size());
+		students.push_back(temp);
+	}
 
-	cout << "Enter all of your homework marks: ";
+	sort(students.begin(), students.end(), compareStudent);
 
-	vector<double> homework;
-	readHomework(cin, homework);
+	for (vector<Student>::size_type i = 0; i < students.size(); i++) {
+		cout << students[i].name << string(longestName + 1 - students[i].name.size(), ' ');
+		
+		try {
+			double finalGrade = grade(students[i]);
+			cout << "Your final grade is " << finalGrade << endl;
+		} catch (domain_error) {
+			cout << endl << "You must enter your grades. Try again." << endl;
+			return 1;
+		}
 
-	try {
-		double finalGrade = grade(midterm, final, homework);
-		cout << "Your final grade is " << finalGrade << endl;
-	} catch (domain_error) {
-		cout << endl << "You must enter your grades. Try again." << endl;
-		return 1;
+		cout << endl;
 	}
 
 	return 0;
