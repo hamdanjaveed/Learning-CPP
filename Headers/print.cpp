@@ -18,3 +18,5 @@ void printVector(vector<int> vect) {
 void changeVector(vector<int>& vect) {
 	vect[0] = 71;
 }
+
+void printList(list<int> list)

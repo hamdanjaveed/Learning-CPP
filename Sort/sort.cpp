@@ -1,27 +1,32 @@
 // sort.cpp
 
 #include <iostream>
+#include <list>
 #include "sort.h"
 
-void bubbleSort(list<int> list) {
-	list<int>::iterator iter;
+using namespace std;
+
+void bubbleSort(list<int> l) {
+	list<int>::iterator current;
 	bool didSwap = true;
 	int temp;
 	while(didSwap) {
 		didSwap = false;
-		for (iter = list.begin(); iter < list.end(); iter++) {
-			list<int>::iterator prev = --iter;
-			if (*iter < *(prev)) {
-				int temp = *iter;
-				*iter = *prev;
-				*prev = temp;
+		for (current = l.begin(); current != l.end(); current++) {
+			list<int>::iterator previous = --current;
+			current++;
+			if (*current < *previous) {
+				temp = *current;
+				*current = *previous;
+				*previous = temp;
 				didSwap = true;
 			}
 		}
 	}
-	cout << "[" << list.front();
-	for (iter = list.begin(); iter < list.end(); iter++) {
-		cout << ", " << *iter;
+	cout << "[" << l.front();
+	current = l.begin();
+	for (current++; current != l.end(); current++) {
+		cout << ", " << *current;
 	}
 	cout << "]" << endl;
 }
