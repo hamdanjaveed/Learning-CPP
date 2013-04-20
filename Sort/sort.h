@@ -2,8 +2,8 @@
 #define GUARD_SORT_H
 // sort.h
 
-#include <vector>
+#include <list>
 
-void bubbleSort(std::vector<int>);
+void bubbleSort(std::list<int>);
 
 #endif

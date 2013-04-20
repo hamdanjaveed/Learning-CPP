@@ -3,25 +3,25 @@
 #include <iostream>
 #include "sort.h"
 
-using namespace std;
-
-void bubbleSort(vector<int> list) {
+void bubbleSort(list<int> list) {
+	list<int>::iterator iter;
 	bool didSwap = true;
 	int temp;
 	while(didSwap) {
 		didSwap = false;
-		for (vector<int>::size_type i = 1; i < list.size(); i++) {
-			if (list[i] < list[i - 1]) {
-				int temp = list[i];
-				list[i] = list[i - 1];
-				list[i - 1] = temp;
+		for (iter = list.begin(); iter < list.end(); iter++) {
+			list<int>::iterator prev = --iter;
+			if (*iter < *(prev)) {
+				int temp = *iter;
+				*iter = *prev;
+				*prev = temp;
 				didSwap = true;
 			}
 		}
 	}
-	cout << "[" << list[0];
-	for (vector<int>::size_type i = 1; i < list.size(); i++) {
-		cout << ", " << list[i];
+	cout << "[" << list.front();
+	for (iter = list.begin(); iter < list.end(); iter++) {
+		cout << ", " << *iter;
 	}
 	cout << "]" << endl;
 }
